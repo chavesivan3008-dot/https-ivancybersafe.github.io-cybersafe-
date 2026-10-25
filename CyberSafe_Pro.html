@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>CyberSafe Pro</title>
+<style>
+:root{--bg:#07111f;--p:#0d1b2d;--p2:#101f33;--b:#203852;--t:#f4f7fb;--m:#9db0c5;--g:#42e6a4;--y:#ffd166;--r:#ff6b6b}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;font-family:Arial,sans-serif;background:var(--bg);color:var(--t)}
+header{position:sticky;top:0;z-index:5;background:#07111ff2;border-bottom:1px solid var(--b);padding:14px 6%;display:flex;justify-content:space-between;align-items:center;gap:20px}
+.logo{font-size:23px;font-weight:800;color:var(--g)}nav{display:flex;gap:15px;flex-wrap:wrap}nav a{color:#cbd6e2;text-decoration:none;font-size:14px}
+main{max-width:1200px;margin:auto}.hero{padding:80px 6%;text-align:center;background:radial-gradient(circle at top,#153b62,var(--bg) 58%)}
+h1{font-size:clamp(40px,7vw,70px);margin:10px 0}.accent{color:var(--g)}.hero p{max-width:760px;margin:0 auto 25px;color:#b5c4d3;font-size:18px}
+.btn{border:0;border-radius:9px;padding:12px 18px;background:var(--g);color:#04130d;font-weight:800;cursor:pointer}.btn.secondary{background:#182c43;color:white;border:1px solid var(--b)}
+section{padding:55px 6%}.title{text-align:center;margin-bottom:28px}.title p,.muted{color:var(--m)}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px}.card,.box{background:linear-gradient(180deg,var(--p),#091728);border:1px solid var(--b);border-radius:15px;padding:22px}
+.card h3{margin-top:8px}.icon{font-size:30px}.tool{max-width:850px;margin:auto}
+input,textarea{width:100%;padding:13px;border-radius:9px;border:1px solid #36516c;background:#06101c;color:white;margin:9px 0 13px;font:inherit}textarea{min-height:145px;resize:vertical}
+.result{display:none;margin-top:15px;padding:16px;border-radius:10px}.good{display:block;background:#0d3327;border:1px solid var(--g)}.warn{display:block;background:#342b14;border:1px solid var(--y)}.bad{display:block;background:#351d22;border:1px solid var(--r)}
+.bar{height:10px;background:#06101c;border-radius:10px;overflow:hidden;margin:12px 0}.fill{height:100%;width:0;background:var(--g);transition:.3s}
+.checks label{display:block;margin:11px 0;color:#d4dfeb}.checks input{width:auto;margin-right:9px}.notes-status{font-size:13px;color:var(--m);margin-left:10px}
+.quiz button{display:block;width:100%;text-align:left;margin:8px 0;padding:11px;border:1px solid var(--b);border-radius:9px;background:#0a1727;color:white;cursor:pointer}.quiz button:hover{border-color:var(--g)}
+footer{text-align:center;padding:35px;color:#71849a;border-top:1px solid #14283e}
+@media(max-width:720px){header{align-items:flex-start;flex-direction:column}.hero{padding-top:55px}}
+</style>
+</head>
+<body>
+<header><div class="logo">🛡 CyberSafe Pro</div><nav>
+<a href="#panel">Panel</a><a href="#mensaje">Phishing</a><a href="#clave">Contraseñas</a><a href="#enlace">Enlaces</a><a href="#check">Checklist</a><a href="#notas">Notas</a><a href="#quiz">Test</a>
+</nav></header>
+<main>
+<section class="hero"><div>SEGURIDAD DIGITAL · HERRAMIENTAS DEFENSIVAS</div><h1>Tu centro de <span class="accent">ciberseguridad</span></h1>
+<p>Herramientas educativas que funcionan en tu navegador para reconocer riesgos y mejorar tus hábitos de seguridad.</p>
+<button class="btn" onclick="location.href='#panel'">Abrir panel</button></section>
+
+<section id="panel"><div class="title"><h2>Panel de seguridad</h2><p>Acceso rápido a las herramientas.</p></div>
+<div class="grid">
+<div class="card"><div class="icon">🎣</div><h3>Analizar mensajes</h3><p class="muted">Busca señales comunes de phishing y manipulación.</p></div>
+<div class="card"><div class="icon">🔑</div><h3>Contraseñas</h3><p class="muted">Evalúa características básicas de una contraseña de prueba.</p></div>
+<div class="card"><div class="icon">🔗</div><h3>Revisar enlaces</h3><p class="muted">Inspecciona el texto de una URL sin abrirla.</p></div>
+<div class="card"><div class="icon">✅</div><h3>Checklist</h3><p class="muted">Guarda en este navegador tus medidas de protección.</p></div>
+</div></section>
+
+<section id="mensaje"><div class="title"><h2>Analizador anti-phishing</h2><p>No introduzcas información privada.</p></div><div class="box tool">
+<textarea id="msg" placeholder="Pega aquí el texto sospechoso..."></textarea><button class="btn" onclick="scanMsg()">Analizar mensaje</button><div id="msgOut" class="result"></div></div></section>
+
+<section id="clave"><div class="title"><h2>Comprobador de contraseña</h2><p>Usa una contraseña inventada para practicar. El análisis es local.</p></div><div class="box tool">
+<input id="pw" type="password" autocomplete="off" placeholder="Contraseña de prueba"><div class="bar"><div class="fill" id="pwbar"></div></div>
+<button class="btn" onclick="scanPw()">Comprobar</button><button class="btn secondary" onclick="togglePw()">Mostrar / ocultar</button><div id="pwOut" class="result"></div></div></section>
+
+<section id="enlace"><div class="title"><h2>Inspector básico de enlaces</h2><p>La herramienta no visita la dirección; solo analiza el texto que escribes.</p></div><div class="box tool">
+<input id="url" placeholder="Ejemplo: https://ejemplo.com"><button class="btn" onclick="scanUrl()">Revisar sin abrir</button><div id="urlOut" class="result"></div></div></section>
+
+<section id="check"><div class="title"><h2>Mi checklist de seguridad</h2><p>El progreso se guarda localmente en este navegador.</p></div><div class="box tool checks" id="checks">
+<label><input type="checkbox">Uso contraseñas diferentes en mis cuentas importantes</label>
+<label><input type="checkbox">Tengo activada la verificación en dos pasos cuando está disponible</label>
+<label><input type="checkbox">Mantengo mis dispositivos y aplicaciones actualizados</label>
+<label><input type="checkbox">Reviso antes de abrir enlaces inesperados</label>
+<label><input type="checkbox">Tengo una copia de seguridad de mis archivos importantes</label>
+<div class="bar"><div class="fill" id="checkbar"></div></div><p id="checkText" class="muted"></p></div></section>
+
+<section id="notas"><div class="title"><h2>Notas de seguridad</h2><p>Para recordatorios no sensibles. No guardes contraseñas aquí.</p></div><div class="box tool">
+<textarea id="notes" placeholder="Ejemplo: revisar privacidad de una cuenta..."></textarea><button class="btn" onclick="saveNotes()">Guardar notas</button><span class="notes-status" id="noteStatus"></span></div></section>
+
+<section id="quiz"><div class="title"><h2>Mini test</h2><p>Comprueba tus conocimientos básicos.</p></div><div class="box tool quiz">
+<h3>Recibes un correo que dice que tu cuenta será cerrada hoy y te pide iniciar sesión desde un enlace. ¿Qué opción es más segura?</h3>
+<button onclick="answer(false)">Entrar rápidamente desde el enlace</button>
+<button onclick="answer(true)">Abrir por mi cuenta la web o app oficial y comprobar allí el aviso</button>
+<button onclick="answer(false)">Responder al correo enviando mi contraseña</button>
+<div id="quizOut" class="result"></div></div></section>
+
+<section><div class="box tool"><h2>🚨 Si sospechas que una cuenta está comprometida</h2><p class="muted">Entra desde el sitio o aplicación oficial, cambia la contraseña por una nueva y única, revisa sesiones o dispositivos conectados y activa la verificación en dos pasos. Si hay pagos o datos financieros implicados, contacta con la entidad correspondiente por sus canales oficiales.</p></div></section>
+</main>
+<footer>CyberSafe Pro · Proyecto educativo y defensivo · Los análisis automáticos no garantizan que un contenido sea seguro.</footer>
+
+<script>
+const esc=s=>s.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function scanMsg(){
+ let s=document.getElementById('msg').value.trim(),o=document.getElementById('msgOut'); if(!s){o.className='result warn';o.innerHTML='Escribe un mensaje para analizar.';return}
+ let x=s.toLowerCase(),hits=[];
+ [['urgente','Presión o urgencia'],['inmediatamente','Presión para actuar'],['contraseña','Mención de contraseña'],['datos bancarios','Mención de datos bancarios'],['premio','Promesa de premio'],['ganador','Supuesto premio'],['verifica tu cuenta','Solicitud de verificación'],['cuenta bloqueada','Amenaza sobre una cuenta'],['haz clic','Petición de pulsar un enlace']].forEach(a=>{if(x.includes(a[0])&&!hits.includes(a[1]))hits.push(a[1])});
+ if(/https?:\/\/|www\.|bit\.ly|tinyurl/i.test(s))hits.push('Contiene una dirección web');
+ if(hits.length){o.className='result bad';o.innerHTML='<b>⚠ Señales para revisar:</b><br>'+hits.map(esc).join('<br>')+'<p>No demuestra por sí solo que sea fraude. Verifica el remitente por un canal oficial.</p>'}
+ else{o.className='result good';o.innerHTML='<b>✓ No aparecen señales básicas de nuestra lista.</b><p>Eso no garantiza que sea seguro. Comprueba siempre remitente, contexto y enlaces.</p>'}
+}
+function scanPw(){
+ let p=document.getElementById('pw').value,o=document.getElementById('pwOut'),n=0;if(!p){o.className='result warn';o.textContent='Escribe una contraseña de prueba.';return}
+ if(p.length>=12)n++;if(p.length>=16)n++;if(/[a-z]/.test(p)&&/[A-Z]/.test(p))n++;if(/\d/.test(p))n++;if(/[^A-Za-z0-9]/.test(p))n++;
+ document.getElementById('pwbar').style.width=(n*20)+'%';
+ if(n<=2){o.className='result bad';o.textContent='Débil: prueba una contraseña más larga y única.'}
+ else if(n<=4){o.className='result warn';o.textContent='Mejorable: aumentar la longitud puede ayudar.'}
+ else{o.className='result good';o.textContent='Buenas características básicas. Recuerda usar una contraseña única para cada cuenta.'}
+}
+function togglePw(){let p=document.getElementById('pw');p.type=p.type==='password'?'text':'password'}
+function scanUrl(){
+ let s=document.getElementById('url').value.trim(),o=document.getElementById('urlOut');if(!s){o.className='result warn';o.textContent='Escribe una dirección para revisarla.';return}
+ let flags=[];if(!/^https:\/\//i.test(s))flags.push('No empieza por HTTPS');if(/bit\.ly|tinyurl|t\.co/i.test(s))flags.push('Parece usar un acortador');
+ if(/@/.test(s))flags.push('Contiene el carácter @, que merece revisión');if(/[^\x00-\x7F]/.test(s))flags.push('Contiene caracteres no ASCII: revisa el dominio con cuidado');
+ if(flags.length){o.className='result warn';o.innerHTML='<b>Revisa estos puntos:</b><br>'+flags.map(esc).join('<br>')+'<p>No abras un enlace solo porque este análisis no detecte problemas.</p>'}
+ else{o.className='result good';o.innerHTML='No se detectaron esas señales básicas. Esto no certifica que la dirección sea segura.'}
+}
+const boxes=[...document.querySelectorAll('#checks input')];
+function updateChecks(){let n=boxes.filter(x=>x.checked).length;document.getElementById('checkbar').style.width=(n/boxes.length*100)+'%';document.getElementById('checkText').textContent=n+' de '+boxes.length+' medidas marcadas';localStorage.setItem('cyberChecks',JSON.stringify(boxes.map(x=>x.checked)))}
+boxes.forEach(x=>x.addEventListener('change',updateChecks));
+try{let a=JSON.parse(localStorage.getItem('cyberChecks'));if(Array.isArray(a))boxes.forEach((x,i)=>x.checked=!!a[i])}catch(e){}
+updateChecks();
+document.getElementById('notes').value=localStorage.getItem('cyberNotes')||'';
+function saveNotes(){localStorage.setItem('cyberNotes',document.getElementById('notes').value);let s=document.getElementById('noteStatus');s.textContent='Guardado en este navegador';setTimeout(()=>s.textContent='',2200)}
+function answer(ok){let o=document.getElementById('quizOut');o.className='result '+(ok?'good':'bad');o.textContent=ok?'✓ Correcto. Entrar por tu cuenta en el servicio oficial evita depender del enlace recibido.':'✗ No es la opción más segura. Evita entregar credenciales o depender de un enlace inesperado.'}
+</script>
+</body></html>
